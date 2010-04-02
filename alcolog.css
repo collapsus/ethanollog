@@ -1,0 +1,21 @@
+body
+{
+    font-size: 60%;
+}
+
+.alcolog table
+{
+    background-color: #F9F9F9;
+}
+
+div.commit
+{
+    width: auto;
+    background-color: #ffa8a8;
+    display: none;
+}
+
+input.volumepicker
+{
+    text-align: right;
+}
