@@ -24,8 +24,13 @@
                         currentDrink = $(".drinkpicker").val(),
                         currentVolume = $(".volumepicker").val();
                         commit = $(".commit");
-                    logs[currentDate] = {};
-                    logs[currentDate][currentDrink] = currentVolume;
+                    if (!logs[currentDate]) {logs[currentDate] = {}};
+                    if (!logs[currentDate][currentDrink]) {
+                        logs[currentDate][currentDrink] = + currentVolume;
+                    } else {
+                        logs[currentDate][currentDrink] += + currentVolume;
+                    };
+
                     $(this).attr('disabled', 'disabled').animate({disabled: ''}, 1000);
                     commit.text(currentDate + ' / ' + currentDrink + ' / ' + currentVolume + 'мл.').show();
                     setTimeout(function(){ commit.fadeOut() }, 3000);
