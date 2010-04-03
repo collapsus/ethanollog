@@ -57,84 +57,68 @@ AlcoLog.prototype.makeDOM = function(){
         _this[k] = _this.elem.find(v);
     });
 
-    this.datepicker.datepicker({dateFormat: 'dd.mm.yy', autoSize: true, firstDay: 1}).datepicker("setDate", '0');
+    this.datepicker.datepicker({dateFormat: 'dd.mm.yy', autoSize: true, firstDay: 1}).datepicker('setDate', '0');
+
+    function disableSubmit() {
+        _this.submit
+            .attr('disabled',
+                _this.datepicker.val() &&
+                _this.drinkpicker.val() &&
+                _this.percent.val() &&
+                _this.volumepicker.val() ? '' : 'disabled');
+    }
+
+    function showDate(date) {
+        var log = _this.logs[date];
+        if (log) {
+            var res = '<div style="font-weight: bold">' + date + '</div>';
+            $.each(log.byName, function(k, v){
+                res += '<div>' + k +  ' (~' + _this.drinks[k] + '%): ' + v + 'мл.</div>'
+            });
+            res += '<div>Всего чистого алкоголя за день: ' + log.totalDayAlcohol + 'мл.</div>';
+            _this.history.html(res).show();
+        }
+    }
 
     this.drinkpicker.change(function(){
         _this.percent.val(_this.drinks[$(this).val()]);
-        if (($(this).val() != 'Выберите напиток') && (_this.datepicker.val() != '') && (_this.volumepicker.val() != '')) {
-            _this.submit.attr('disabled', '');
-        } else {
-            _this.submit.attr('disabled', 'disabled');
-        };
+        disableSubmit();
     });
 
-    this.volumepicker.keypress(function(event){
-        return keyDownNumber(event);
-    });
-
-    this.volumepicker.keyup(function(){
-        if (($(this).val() != '') && (_this.datepicker.val() != '') && (_this.percent.val() != '')) {
-            _this.submit.attr('disabled', '');
-        } else {
-            _this.submit.attr('disabled', 'disabled');
-        };
-    });
+    this.volumepicker
+        .keypress(function(e){ return e.ctrlKey || e.altKey || e.charCode < 58 })
+        .keyup(disableSubmit);
 
     this.datepicker.change(function(){
-        if (($(this).val() != '') && (_this.volumepicker.val() != '') && (_this.percent.val() != '')) {
-            _this.submit.attr('disabled', '');
-        } else {
-            _this.submit.attr('disabled', 'disabled');
-        };
-
-        var currentDate = _this.datepicker.val();
-        $('.historyrec').remove();
-        if (_this.logs[currentDate]) {
-            $.each(_this.logs[currentDate], function(k, v){
-                var name = k == 'totalDayAlcohol' ? 'Всего чистого алкоголя за день' : k;
-                $('<div class="historyrec">' + currentDate + ' / ' + name + ': ' + v + 'мл.</div>').appendTo(_this.history);
-                _this.history.show();
-            });
-        }
-
+        disableSubmit();
+        showDate(_this.datepicker.val());
     });
 
-    this.submit.click(function(){
-        var currentDate = _this.datepicker.val(),
-            currentDrink = _this.drinkpicker.val(),
-            currentVolume = _this.volumepicker.val();
-            currentPercent = _this.percent.val();
-        if (!_this.logs[currentDate]) {
-            _this.logs[currentDate] = {'totalDayAlcohol': 0};
-        };
-        if (!_this.logs[currentDate][currentDrink]) {
-            _this.logs[currentDate][currentDrink] = + currentVolume;
-        } else {
-            _this.logs[currentDate][currentDrink] += + currentVolume;
-        };
-        _this.logs[currentDate]['totalDayAlcohol'] += + currentVolume * currentPercent / 100;
-        $(this).attr('disabled', 'disabled');
-        _this.volumepicker.val('');
-        _this.drinkpicker.val('Выберите напиток');
-        _this.percent.val('');
-
-            $('.historyrec').remove();
-            if (_this.logs[currentDate]) {
-                $.each(_this.logs[currentDate], function(k, v){
-                    var name = k == 'totalDayAlcohol' ? 'Всего чистого алкоголя за день' : k;
-                    $('<div class="historyrec">' + currentDate + ' / ' + name + ': ' + v + 'мл.</div>').appendTo(_this.history);
-                    _this.history.show();
+    this.elem.submit(function(){
+        var date = _this.datepicker.val(),
+            drink = _this.drinkpicker.val(),
+            volume = + _this.volumepicker.val(),
+            percent = + _this.percent.val(),
+            log = _this.logs[date] ||
+                (_this.logs[date] = {
+                    'totalDayAlcohol': 0,
+                    'byName': {}
                 });
-            };
 
-        _this.commit.text('Учтено: ' + currentDate + ' / ' + currentDrink + '('+ currentPercent + '%) / ' + currentVolume + 'мл.').show();
+        log.byName[drink] = (log[drink] || 0) + volume;
+
+        log.totalDayAlcohol += volume * percent / 100;
+
+        _this.volumepicker.val('');
+        _this.drinkpicker.val('');
+        _this.percent.val('');
+        disableSubmit();
+
+        showDate(date);
+
+        _this.commit.text('Учтено: ' + date + ' / ' + drink + '('+ percent + '%) / ' + volume + 'мл.').show();
         setTimeout(function(){ _this.commit.fadeOut('slow', function(){}) }, 3000);
+
+        return false;
     });
-};
-
-
-function keyDownNumber(e){  //цельнотянуто с http://www.gotdotnet.ru/forums/4/47901/
-    var key = (typeof e.charCode == 'undefined' ? e.keyCode : e.charCode);
-    if (e.ctrlKey || e.altKey || key < 58) return true;
-    else return false;
 };
