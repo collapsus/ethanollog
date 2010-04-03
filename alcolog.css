@@ -1,11 +1,16 @@
 body
 {
-    font-size: 60%;
+/*    font-size: 60%; */
 }
 
 .alcolog table
 {
     background-color: #F9F9F9;
+}
+
+div.history
+{
+    display: none;
 }
 
 div.commit
@@ -18,4 +23,15 @@ div.commit
 input.volumepicker
 {
     text-align: right;
+}
+
+input.percent
+{
+    text-align: right;
+}
+
+.submit
+{
+    
+    disabled: disabled;
 }
