@@ -35,12 +35,11 @@ AlcoLog.prototype.makeHTML = function(){
 };
 
 AlcoLog.prototype.makeOptions = function(values){
-    var arr = ['<option selected disabled>Выберите напиток</option>'];
+    var res = '<option selected="selected" disabled="disabled" value="">Выберите напиток</option>';
     $.each(values, function(k, v){
-        var s = '<option value="' + k + '">' + k + '</option>';
-        arr.push(s);
+        res += '<option value="' + k + '">' + k + '</option>';
     });
-    return arr.join();
+    return res;
 };
 
 AlcoLog.prototype.makeDOM = function(){
