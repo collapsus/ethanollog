@@ -5,8 +5,8 @@ function AlcoLog(logs, drinks){
 }
 
 AlcoLog.prototype.makeHTML = function(){
-    var r = [
-        '<div class="alcolog">',
+    return [
+        '<form class="alcolog">',
             '<table>',
                 '<tr>',
                     '<td>',
@@ -16,7 +16,7 @@ AlcoLog.prototype.makeHTML = function(){
                         '</select>',
                         '<input type="text" class="percent" readonly size="2" maxlength="2" /> %&nbsp;',
                         '<input type="text" class="volumepicker" size="5" maxlength="5" /> мл.&nbsp;',
-                        '<input type="button" value="Submit" class="submit" disabled="disabled"/>',
+                        '<input type="submit" value="Выпито!" class="submit" disabled="disabled"/>',
                     '</td>',
                 '</tr>',
                 '<tr>',
@@ -30,9 +30,8 @@ AlcoLog.prototype.makeHTML = function(){
                     '</td>',
                 '</tr>',
             '</table>',
-        '</div>'
+        '</form>'
     ].join('');
-    return r;
 };
 
 AlcoLog.prototype.makeOptions = function(values){
