@@ -8,30 +8,30 @@ body
     background-color: #F9F9F9;
 }
 
-div.history
+.history
 {
     display: none;
 }
 
-div.commit
+.commit
 {
     width: auto;
     background-color: #ffa8a8;
     display: none;
 }
 
-input.volumepicker
+.volumepicker
 {
     text-align: right;
 }
 
-input.percent
+.percent
 {
     text-align: right;
 }
 
 .submit
 {
-    
+
     disabled: disabled;
 }
