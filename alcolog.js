@@ -2,7 +2,7 @@ function AlcoLog(logs, drinks){
     this.logs = logs;
     this.drinks = drinks;
     this.makeDOM();
-};
+}
 
 AlcoLog.prototype.makeHTML = function(){
     var r = [
@@ -97,7 +97,7 @@ AlcoLog.prototype.makeDOM = function(){
                 $('<div class="historyrec">' + currentDate + ' / ' + name + ': ' + v + 'мл.</div>').appendTo(_this.history);
                 _this.history.show();
             });
-        };
+        }
 
     });
 
