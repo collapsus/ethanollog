@@ -77,7 +77,7 @@ AlcoLog.prototype.makeDOM = function(){
             });
             res += '<div>Всего чистого алкоголя за день: ' + log.totalDayAlcohol + 'мл.</div>';
             _this.history.html(res).show();
-        }
+        } else _this.history.hide();
     }
 
     this.drinkpicker.change(function(){
