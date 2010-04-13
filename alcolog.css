@@ -1,6 +1,17 @@
 body
 {
-/*    font-size: 60%; */
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
+
+input
+{
+    margin: 0.1em;
+}
+
+#ui-datepicker-div
+{
+    font-size: 60%;
 }
 
 .alcolog table
@@ -30,8 +41,7 @@ body
     text-align: right;
 }
 
-.submit
+.submit-div
 {
-
-    disabled: disabled;
+    text-align: right;
 }
